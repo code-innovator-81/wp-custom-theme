@@ -54,3 +54,9 @@ function wp_custom_theme_scripts() {
     ));
 }
 add_action('wp_enqueue_scripts', 'wp_custom_theme_scripts');
+
+// Include custom functionality
+require_once get_template_directory() . '/inc/custom-post-types.php';
+require_once get_template_directory() . '/inc/custom-fields.php';
+
+
