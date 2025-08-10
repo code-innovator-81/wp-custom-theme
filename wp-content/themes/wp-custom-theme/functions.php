@@ -61,3 +61,77 @@ add_action('wp_enqueue_scripts', 'wp_custom_theme_scripts');
 require_once get_template_directory() . '/inc/custom-post-types.php';
 require_once get_template_directory() . '/inc/custom-fields.php';
 require_once get_template_directory() . '/inc/api-endpoints.php';
+
+// Custom excerpt length
+function wp_custom_theme_excerpt_length($length)
+{
+    return 30;
+}
+add_filter('excerpt_length', 'wp_custom_theme_excerpt_length');
+
+// Custom excerpt more
+function wp_custom_theme_excerpt_more($more)
+{
+    return '...';
+}
+add_filter('excerpt_more', 'wp_custom_theme_excerpt_more');
+
+// Add custom image sizes
+function wp_custom_theme_image_sizes()
+{
+    add_image_size('project-thumbnail', 400, 300, true);
+    add_image_size('project-large', 800, 600, true);
+}
+add_action('after_setup_theme', 'wp_custom_theme_image_sizes');
+
+// AJAX handler for project filtering
+function wp_custom_filter_projects()
+{
+    // Verify nonce
+    if (! wp_verify_nonce($_POST['nonce'], 'wp_custom_nonce')) {
+        wp_die('Security check failed');
+    }
+
+    $start_date = sanitize_text_field($_POST['start_date']);
+    $end_date   = sanitize_text_field($_POST['end_date']);
+
+    $args = [
+        'post_type'      => 'project',
+        'posts_per_page' => -1,
+        'meta_query'     => ['relation' => 'AND'],
+    ];
+
+    if (! empty($start_date)) {
+        $args['meta_query'][] = [
+            'key'     => 'project_start_date',
+            'value'   => $start_date,
+            'compare' => '>=',
+            'type'    => 'DATE',
+        ];
+    }
+
+    if (! empty($end_date)) {
+        $args['meta_query'][] = [
+            'key'     => 'project_end_date',
+            'value'   => $end_date,
+            'compare' => '<=',
+            'type'    => 'DATE',
+        ];
+    }
+
+    $projects = new WP_Query($args);
+
+    if ($projects->have_posts()) {
+        while ($projects->have_posts()) {
+            $projects->the_post();
+            get_template_part('templates/project', 'item');
+        }
+    } else {
+        echo '<p>No project found matching your criteria.</p>';
+    }
+
+    wp_reset_postdata();
+    wp_die();
+}
+add_action('wp_ajax_filter_projects', 'wp_custom_filter_projects');
+add_action('wp_ajax_nopriv_filter_projects', 'wp_custom_filter_projects');

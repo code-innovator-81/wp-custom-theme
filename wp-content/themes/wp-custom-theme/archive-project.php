@@ -1,49 +1,88 @@
 <?php
-/**
- * Template for displaying project archives
- */
+    /**
+     * Template for displaying project archives
+     */
 
-get_header();
+    get_header();
 ?>
 
 <main id="primary" class="site-main">
     <header class="page-header">
         <h1 class="page-title"><?php esc_html_e('Projects', 'wp-custom-theme'); ?></h1>
-        <p class="archive-description"><?php esc_html_e('Explore our portfolio of completed projects', 'wp-custom-theme'); ?></p>
+        <p class="archive-description"><?php esc_html_e('Explore our portfolio of ongoing and completed projects', 'wp-custom-theme'); ?></p>
     </header>
-    
- 
+
+     <!-- Project Filter Section -->
+    <div class="project-filter">
+        <h3><?php esc_html_e('Filter Projects', 'wp-custom-theme'); ?></h3>
+        <form id="project-filter-form" class="filter-form">
+            <div class="filter-group">
+                <label for="start_date"><?php esc_html_e('Start Date', 'wp-custom-theme'); ?></label>
+                <input type="date" id="start_date" name="start_date" />
+            </div>
+
+            <div class="filter-group">
+                <label for="end_date"><?php esc_html_e('End Date', 'wp-custom-theme'); ?></label>
+                <input type="date" id="end_date" name="end_date" />
+            </div>
+
+            <div class="filter-group">
+                <label for="project_category"><?php esc_html_e('Category', 'wp-custom-theme'); ?></label>
+                <select id="project_category" name="project_category">
+                    <option value=""><?php esc_html_e('All Categories', 'wp-custom-theme'); ?></option>
+                    <?php
+                        $categories = get_terms([
+                            'taxonomy'   => 'project_category',
+                            'hide_empty' => true,
+                        ]);
+
+                        if (! empty($categories) && ! is_wp_error($categories)) {
+                            foreach ($categories as $category) {
+                                echo '<option value="' . esc_attr($category->slug) . '">' . esc_html($category->name) . '</option>';
+                            }
+                        }
+                    ?>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <button type="submit" class="btn"><?php esc_html_e('Filter', 'wp-custom-theme'); ?></button>
+                <button type="button" id="clear-filters" class="btn btn-secondary"><?php esc_html_e('Clear', 'wp-custom-theme'); ?></button>
+            </div>
+        </form>
+    </div>
+
     <div class="projects-container">
         <div id="projects-grid" class="projects-grid">
             <?php
-            if (have_posts()) :
-                while (have_posts()) :
-                    the_post();
-                    get_template_part('templates/project', 'item');
-                endwhile;
-            else :
-                ?>
+                if (have_posts()):
+                    while (have_posts()):
+                        the_post();
+                        get_template_part('templates/project', 'item');
+                    endwhile;
+                else:
+            ?>
                 <div class="no-projects-found">
                     <h2><?php esc_html_e('No projects found', 'wp-custom-theme'); ?></h2>
                     <p><?php esc_html_e('Sorry, no projects match your criteria.', 'wp-custom-theme'); ?></p>
                 </div>
                 <?php
-            endif;
-            ?>
+                    endif;
+                ?>
         </div>
-        
-        <?php if (have_posts()) : ?>
+
+        <?php if (have_posts()): ?>
             <div class="pagination-wrapper">
                 <?php
-                the_posts_pagination(array(
-                    'prev_text' => esc_html__('← Previous', 'wp-custom-theme'),
-                    'next_text' => esc_html__('Next →', 'wp-custom-theme'),
-                ));
+                    the_posts_pagination([
+                        'prev_text' => esc_html__('← Previous', 'wp-custom-theme'),
+                        'next_text' => esc_html__('Next →', 'wp-custom-theme'),
+                    ]);
                 ?>
             </div>
         <?php endif; ?>
     </div>
-    
+
     <div id="loading" class="loading-spinner" style="display: none;">
         <p><?php esc_html_e('Loading projects...', 'wp-custom-theme'); ?></p>
     </div>
@@ -179,7 +218,7 @@ get_header();
     .projects-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .project-meta-summary {
         flex-direction: column;
         gap: 0.5rem;
@@ -201,38 +240,38 @@ document.addEventListener('DOMContentLoaded', function() {
     const loading = document.getElementById('loading');
     const clearFilters = document.getElementById('clear-filters');
     const projectsContainer = document.querySelector('.projects-container');
-    
+
     if (filterForm) {
         filterForm.addEventListener('submit', function(e) {
             e.preventDefault();
             filterProjects();
         });
     }
-    
+
     if (clearFilters) {
         clearFilters.addEventListener('click', function() {
             filterForm.reset();
             filterProjects();
         });
     }
-    
+
     function filterProjects() {
         const formData = new FormData(filterForm);
         const params = new URLSearchParams();
-        
+
         for (const [key, value] of formData.entries()) {
             if (value) {
                 params.append(key, value);
             }
         }
-        
+
         params.append('action', 'filter_projects');
         params.append('nonce', wp_custom_ajax.nonce);
-        
+
         // Show loading state
         projectsContainer.classList.add('loading');
         loading.style.display = 'block';
-        
+
         fetch(wp_custom_ajax.ajax_url, {
             method: 'POST',
             headers: {

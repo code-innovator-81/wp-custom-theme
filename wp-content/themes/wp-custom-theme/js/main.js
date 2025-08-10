@@ -195,29 +195,6 @@
             imageObserver.observe(this);
         });
     }
-
-    /**
-     * Form Validation
-     */
-    function validateForm(form) {
-        let isValid = true;
-        const requiredFields = form.find('[required]');
-
-        requiredFields.each(function() {
-            const field = $(this);
-            const value = field.val().trim();
-
-            if (!value) {
-                field.addClass('error');
-                isValid = false;
-            } else {
-                field.removeClass('error');
-            }
-        });
-
-        return isValid;
-    }
-
    
     // Throttle function
     function throttle(func, limit) {

@@ -415,13 +415,14 @@ body {
 
 .filter-form {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     align-items: end;
 }
 
 .filter-group {
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
 }
 
 .filter-group label {
@@ -433,8 +434,43 @@ body {
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 3px;
+    background: #fff;
+    font-size: 1rem;
+    color: #333;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    min-width: 180px;
+    transition: border-color 0.3s;
+}
+.filter-group select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background: #fff;
+    font-size: 1rem;
+    color: #333;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    min-width: 180px;
+    transition: border-color 0.3s;
 }
 
+.filter-group select:focus {
+    border-color: #333;
+    outline: none;
+}
+.filter-group:last-child {
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+}
+
+.filter-group .btn {
+    min-width: 100px;
+    padding: 0.6rem 1.5rem;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
     .content-area {
