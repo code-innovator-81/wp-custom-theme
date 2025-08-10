@@ -1,132 +1,97 @@
 # WP Custom Theme
 
-A custom WordPress theme built from scratch, showcasing front-end and back-end development skills. Features include custom post types, custom fields, REST API endpoints, AJAX filtering, multi-level responsive navigation, and security best practices.
+This is a custom WordPress theme I built from scratch to demonstrate both front-end and back-end development skills. It includes a custom Projects post type, REST API endpoints, AJAX filtering, multi-level navigation, and is fully responsive.
 
 ---
 
-## 🚀 Setup Instructions
+## Setup
 
-### 1. Requirements
-- WordPress 6.x or later
-- PHP 7.4+
+**Requirements:**
+- WordPress 6.x+
+- PHP 7.4 or newer
 - MySQL/MariaDB
 
-### 2. Installation
-1. Clone or download this repository into your WordPress `wp-content/themes` directory:
+**Installation:**
+1. Download or clone this repo into `wp-content/themes/wp-custom-theme`:
     ```
     git clone https://github.com/code-innovator-81/wp-custom-theme.git
     ```
-2. Activate the theme from the WordPress admin dashboard (`Appearance > Themes`).
+2. Go to Appearance > Themes in the WordPress admin and activate "WP Custom Theme".
 
 ---
 
-## 📁 Theme Structure
+## Theme Structure
 
-- `functions.php` — Theme setup, scripts, custom functions
-- `inc/custom-post-types.php` — Registers custom post types (e.g., Project)
-- `inc/custom-fields.php` — Registers custom fields/meta for projects
+- `functions.php` — Theme setup and custom functions
+- `inc/custom-post-types.php` — Registers the "Projects" post type
+- `inc/custom-fields.php` — Adds custom fields for projects
 - `inc/api-endpoints.php` — Custom REST API endpoints
-- `js/main.js` — Main JavaScript (navigation, filtering, etc.)
-- `style.css` — Main stylesheet (in theme root, required by WordPress)
-- `css/main.css` — Additional main styles
+- `js/main.js` — Navigation, filtering, and other JS
+- `style.css` — Main stylesheet (required by WP)
+- `css/main.css` — Extra styles
 - `css/responsive.css` — Responsive styles
 - `single-project.php` — Single project template
-- `archive-project.php` — Project archive & filter template
-- `templates/home.php` — Custom Home page template
-- `templates/blog.php` — Custom Blog page template
+- `archive-project.php` — Projects archive and filter
+- `templates/home.php` — Home page template
+- `templates/blog.php` — Blog page template
 
 ---
 
-## 🏗️ Features & Implementation
+## Features
 
-### 1. Theme Development
-- Built from scratch, no page builders.
-- Follows WordPress theme development best practices.
-- Includes at least two custom page templates: Home and Blog.
-
-### 2. Custom Post Types
-- **Projects**: Created via code (no plugins).
-- Custom fields for each project:
-  - Project Name
-  - Project Description
-  - Project Start Date
-  - Project End Date
-  - Project URL
-
-### 3. Custom Archive and Single Pages
-- Custom templates for project archive and single project.
-- Displays custom fields in a visually appealing way.
-
-### 4. Dynamic Navigation Menu
-- Uses `wp_nav_menu()` for dynamic, multi-level navigation.
-- Supports nested dropdowns and is mobile-friendly.
-
-### 5. Custom REST API Endpoints
-- **List Projects:**  
-  `GET /wp-json/wp-custom/v1/projects`
-- **Single Project by Slug:**  
-  `GET /wp-json/wp-custom/v1/project/{slug}`  
-  Returns: Project Title, Project URL, Project Start Date, Project End Date
-
-### 6. Responsive Design
-- Fully responsive and mobile-friendly.
-- Uses CSS and minimal JavaScript/jQuery for navigation and layout.
-
-### 7. Basic Security
-- All user input is sanitized and output is escaped using WordPress functions.
-- Nonces are used for AJAX requests to prevent CSRF.
-
-### 8. Bonus: AJAX Project Filtering
-- Filter projects by start date, end date, and category on the archive page.
-- Uses AJAX (`admin-ajax.php`) for fast, dynamic filtering.
+- **Custom Post Type:** "Projects" with custom fields (name, description, dates, URL)
+- **Custom Templates:** Archive and single templates for projects
+- **Navigation:** Dynamic, multi-level menu using `wp_nav_menu()`
+- **REST API:**  
+  - List projects: `/wp-json/wp-custom/v1/projects`
+  - Single project by slug: `/wp-json/wp-custom/v1/project-by-slug/{slug}`
+- **AJAX Filtering:** Filter projects by date and category on the archive page
+- **Responsive Design:** Mobile-friendly navigation and layouts
+- **Security:** Sanitized input, escaped output, nonces for AJAX
 
 ---
 
-## 🧑‍💻 Usage
+## Usage
 
-### How to Add Projects
-- Go to **Projects** in the WordPress admin dashboard.
-- Add new projects and fill in the custom fields.
-
-### How to Assign Menus
-- Go to **Appearance > Menus** to create and assign your navigation menu.
-
-### How to Use Page Templates
-- Assign the Home or Blog template to a page via the Page Attributes panel in the editor.
+- **Add Projects:**  
+  Go to Projects in the admin and add new items with all required fields.
+- **Menus:**  
+  Set up your navigation under Appearance > Menus.
+- **Page Templates:**  
+  Assign Home or Blog templates to pages via Page Attributes.
 
 ---
 
-## 🔌 API Testing
+## API Testing
 
-- Use browser, Postman, or curl:
-    ```
-    curl http://localhost/wp-json/wp-custom/v1/projects
-    curl http://localhost/wp-json/wp-custom/v1/project-by-slug/my-project-slug
-    ```
-
----
-
-## 🛠️ Customization
-
-- Edit `style.css` and `responsive.css` for design changes.
-- Add new fields or endpoints in the `inc/` directory.
-- Use the WordPress Customizer for logo, colors, etc.
+You can test the API endpoints with curl or Postman:
+```
+curl http://localhost/wp-json/wp-custom/v1/projects
+curl http://localhost/wp-json/wp-custom/v1/project-by-slug/my-project-slug
+```
 
 ---
 
-## 📝 Troubleshooting
+## Customization
 
-- If AJAX filtering fails, check that the nonce and action are sent correctly.
-- If REST API endpoints return 404, ensure permalinks are not set to "Plain" and theme is active.
-
----
-
-## 📄 License
-
-MIT (or your preferred license)
+Edit styles in `style.css`, `css/main.css`, or `css/responsive.css`.  
+Add new fields or endpoints in the `inc/` folder as needed.
 
 ---
 
-## ✨ Credits
+## Troubleshooting
 
-Developed by Atul
+- If AJAX filtering doesn’t work, check the nonce and action in your JS.
+- If REST API endpoints return 404, make sure permalinks are set (not "Plain") and the theme is active.
+
+---
+
+## License
+
+MIT
+
+---
+
+## Credits
+
+Theme by Atul
