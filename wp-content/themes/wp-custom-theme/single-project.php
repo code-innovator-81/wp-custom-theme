@@ -1,72 +1,71 @@
 <?php
-/**
- * Template for displaying single project posts
- */
-
-get_header();
+    /**
+     * Template for displaying single project posts.
+     */
+    get_header();
 ?>
 
 <main id="primary" class="site-main">
     <?php
-    while (have_posts()) :
-        the_post();
-        $project_meta = wp_custom_get_project_meta(get_the_ID());
+        while (have_posts()) {
+            the_post();
+            $project_meta = wp_custom_get_project_meta(get_the_ID());
         ?>
-        <article id="post-<?php the_ID(); ?>" <?php post_class('single-project'); ?>>
-            <header class="entry-header">
-                <h1 class="entry-title"><?php the_title(); ?></h1>
-                
-                <?php if (!empty($project_meta['project_name']) && $project_meta['project_name'] !== get_the_title()) : ?>
-                    <p class="project-subtitle"><?php echo esc_html($project_meta['project_name']); ?></p>
-                <?php endif; ?>
-                
+		        <article id="post-<?php the_ID(); ?>"<?php post_class('single-project'); ?>>
+		            <header class="entry-header">
+		                <h1 class="entry-title"><?php the_title(); ?></h1>
+
+		                <?php if (! empty($project_meta['project_name']) && $project_meta['project_name'] !== get_the_title()) {?>
+		                    <p class="project-subtitle"><?php echo esc_html($project_meta['project_name']); ?></p>
+		                <?php }?>
+
                 <div class="project-navigation">
                     <?php
-                    $prev_project = get_previous_post(false, '', 'project_category');
-                    $next_project = get_next_post(false, '', 'project_category');
-                    
-                    if ($prev_project) :
-                        ?>
+                        $prev_project = get_previous_post(false, '', 'project_category');
+                            $next_project = get_next_post(false, '', 'project_category');
+
+                            if ($prev_project) {
+                            ?>
                         <a href="<?php echo get_permalink($prev_project->ID); ?>" class="prev-project">
-                            ← <?php echo get_the_title($prev_project->ID); ?>
+                            ←                                                                                                                             <?php echo get_the_title($prev_project->ID); ?>
                         </a>
-                    <?php endif; ?>
-                    
+                    <?php }?>
+
                     <a href="<?php echo get_post_type_archive_link('project'); ?>" class="all-projects">
                         <?php esc_html_e('All Projects', 'wp-custom-theme'); ?>
                     </a>
-                    
-                    <?php if ($next_project) : ?>
+
+                    <?php if ($next_project) {?>
                         <a href="<?php echo get_permalink($next_project->ID); ?>" class="next-project">
                             <?php echo get_the_title($next_project->ID); ?> →
                         </a>
-                    <?php endif; ?>
+                    <?php }?>
                 </div>
             </header>
-            
-            <?php if (has_post_thumbnail()) : ?>
+
+            <?php if (has_post_thumbnail()) {?>
                 <div class="project-featured-image">
                     <?php the_post_thumbnail('project-large'); ?>
                 </div>
-            <?php endif; ?>
-            
+            <?php }?>
+
             <div class="project-meta-details">
                 <div class="project-meta">
-                    <?php if (!empty($project_meta['project_start_date'])) : ?>
+                    <?php if (! empty($project_meta['project_start_date'])) {?>
                         <div class="project-meta-item">
                             <span class="project-meta-label"><?php esc_html_e('Start Date', 'wp-custom-theme'); ?></span>
                             <span class="project-meta-value"><?php echo wp_custom_format_project_date($project_meta['project_start_date']); ?></span>
                         </div>
-                    <?php endif; ?>
-                    
-                    <?php if (!empty($project_meta['project_end_date'])) : ?>
+                    <?php }?>
+
+                    <?php if (! empty($project_meta['project_end_date'])) {?>
                         <div class="project-meta-item">
                             <span class="project-meta-label"><?php esc_html_e('End Date', 'wp-custom-theme'); ?></span>
                             <span class="project-meta-value"><?php echo wp_custom_format_project_date($project_meta['project_end_date']); ?></span>
                         </div>
-                    <?php endif; ?>
-                    
-                    <?php if (!empty($project_meta['project_url'])) : ?>
+                    <?php }?>
+
+                    <?php if (! empty($project_meta['project_url'])) {?>
                         <div class="project-meta-item">
                             <span class="project-meta-label"><?php esc_html_e('Project URL', 'wp-custom-theme'); ?></span>
                             <span class="project-meta-value">
@@ -75,54 +74,54 @@ get_header();
                                 </a>
                             </span>
                         </div>
-                    <?php endif; ?>
-                    
+                    <?php }?>
+
                     <?php
-                    $categories = get_the_terms(get_the_ID(), 'project_category');
-                    if ($categories && !is_wp_error($categories)) :
-                        ?>
+                        $categories = get_the_terms(get_the_ID(), 'project_category');
+                            if ($categories && ! is_wp_error($categories)) {
+                            ?>
                         <div class="project-meta-item">
                             <span class="project-meta-label"><?php esc_html_e('Categories', 'wp-custom-theme'); ?></span>
                             <span class="project-meta-value">
                                 <?php
-                                $category_links = array();
-                                foreach ($categories as $category) {
-                                    $category_links[] = '<a href="' . get_term_link($category) . '">' . $category->name . '</a>';
-                                }
-                                echo implode(', ', $category_links);
-                                ?>
+                                    $category_links = [];
+                                            foreach ($categories as $category) {
+                                                $category_links[] = '<a href="' . get_term_link($category) . '">' . $category->name . '</a>';
+                                            }
+                                            echo implode(', ', $category_links);
+                                        ?>
                             </span>
                         </div>
-                    <?php endif; ?>
+                    <?php }?>
                 </div>
             </div>
-            
-            <?php if (!empty($project_meta['project_description'])) : ?>
+
+            <?php if (! empty($project_meta['project_description'])) {?>
                 <div class="project-description">
                     <h2><?php esc_html_e('Project Description', 'wp-custom-theme'); ?></h2>
                     <p><?php echo esc_html($project_meta['project_description']); ?></p>
                 </div>
-            <?php endif; ?>
-            
+            <?php }?>
+
             <div class="entry-content">
                 <?php
-                the_content();
-                
-                wp_link_pages(array(
-                    'before' => '<div class="page-links">' . esc_html__('Pages:', 'wp-custom-theme'),
-                    'after'  => '</div>',
-                ));
-                ?>
+                    the_content();
+
+                        wp_link_pages([
+                            'before' => '<div class="page-links">' . esc_html__('Pages:', 'wp-custom-theme'),
+                            'after'  => '</div>',
+                        ]);
+                    ?>
             </div>
-            
-            <?php if (!empty($project_meta['project_url'])) : ?>
+
+            <?php if (! empty($project_meta['project_url'])) {?>
                 <div class="project-cta">
                     <a href="<?php echo esc_url($project_meta['project_url']); ?>" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
                         <?php esc_html_e('View Live Project', 'wp-custom-theme'); ?> →
                     </a>
                 </div>
-            <?php endif; ?>
-            
+            <?php }?>
+
             <footer class="entry-footer">
                 <div class="project-sharing">
                     <h3><?php esc_html_e('Share this project', 'wp-custom-theme'); ?></h3>
@@ -137,76 +136,75 @@ get_header();
                 </div>
             </footer>
         </article>
-        
+
         <?php
-        // Related Projects
-        if ($categories) {
-            $category_ids = array();
-            foreach ($categories as $category) {
-                $category_ids[] = $category->term_id;
-            }
-            
-            $related_projects = new WP_Query(array(
-                'post_type' => 'project',
-                'posts_per_page' => 3,
-                'post__not_in' => array(get_the_ID()),
-                'tax_query' => array(
-                    array(
-                        'taxonomy' => 'project_category',
-                        'field'    => 'term_id',
-                        'terms'    => $category_ids,
-                    ),
-                ),
-            ));
-            
-            if ($related_projects->have_posts()) :
-                ?>
+            // Related Projects
+                if ($categories) {
+                    $category_ids = [];
+                    foreach ($categories as $category) {
+                        $category_ids[] = $category->term_id;
+                    }
+
+                    $related_projects = new WP_Query([
+                        'post_type'      => 'project',
+                        'posts_per_page' => 3,
+                        'post__not_in'   => [get_the_ID()],
+                        'tax_query'      => [
+                            [
+                                'taxonomy' => 'project_category',
+                                'field'    => 'term_id',
+                                'terms'    => $category_ids,
+                            ],
+                        ],
+                    ]);
+
+                    if ($related_projects->have_posts()) {
+                    ?>
                 <section class="related-projects">
                     <h2><?php esc_html_e('Related Projects', 'wp-custom-theme'); ?></h2>
                     <div class="related-projects-grid">
                         <?php
-                        while ($related_projects->have_posts()) :
-                            $related_projects->the_post();
-                            $related_meta = wp_custom_get_project_meta(get_the_ID());
-                            ?>
-                            <div class="related-project-item">
-                                <?php if (has_post_thumbnail()) : ?>
-                                    <div class="related-project-thumbnail">
-                                        <a href="<?php the_permalink(); ?>">
-                                            <?php the_post_thumbnail('project-thumbnail'); ?>
-                                        </a>
-                                    </div>
-                                <?php endif; ?>
-                                
+                            while ($related_projects->have_posts()) {
+                                            $related_projects->the_post();
+                                            $related_meta = wp_custom_get_project_meta(get_the_ID());
+                                        ?>
+		                            <div class="related-project-item">
+		                                <?php if (has_post_thumbnail()) {?>
+		                                    <div class="related-project-thumbnail">
+		                                        <a href="<?php the_permalink(); ?>">
+		                                            <?php the_post_thumbnail('project-thumbnail'); ?>
+		                                        </a>
+		                                    </div>
+		                                <?php }?>
+
                                 <div class="related-project-content">
                                     <h3 class="related-project-title">
                                         <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                                     </h3>
-                                    
-                                    <?php if (!empty($related_meta['project_description'])) : ?>
+
+                                    <?php if (! empty($related_meta['project_description'])) {?>
                                         <p class="related-project-excerpt">
                                             <?php echo wp_trim_words(wp_custom_escape($related_meta['project_description']), 15); ?>
                                         </p>
-                                    <?php endif; ?>
+                                    <?php }?>
                                 </div>
                             </div>
                             <?php
-                        endwhile;
-                        wp_reset_postdata();
-                        ?>
+                                }
+                                            wp_reset_postdata();
+                                        ?>
                     </div>
                 </section>
                 <?php
-            endif;
-        }
-        ?>
-        
-    <?php endwhile; ?>
+                    }
+                        }
+                    ?>
+
+    <?php }?>
 </main>
 
 <style>
 .single-project {
-    max-width: 800px;
     margin: 0 auto;
 }
 
@@ -421,15 +419,15 @@ get_header();
         flex-direction: column;
         gap: 1rem;
     }
-    
+
     .project-meta {
         grid-template-columns: 1fr;
     }
-    
+
     .sharing-buttons {
         flex-direction: column;
     }
-    
+
     .related-projects-grid {
         grid-template-columns: 1fr;
     }

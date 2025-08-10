@@ -28,27 +28,25 @@
      */
     function initMobileMenu() {
         // Create mobile menu toggle button
-        if ($('.main-navigation').length && !$('.mobile-menu-toggle').length) {
-            $('.main-navigation').prepend('<button class="mobile-menu-toggle" aria-label="Toggle Navigation"><span></span><span></span><span></span></button>');
+        if ($('.main-navigation .container').length && !$('.mobile-menu-toggle').length) {
+            $('.main-navigation .container').prepend('<button class="mobile-menu-toggle" aria-label="Toggle Navigation"><span></span><span></span><span></span></button>');
         }
 
         // Handle mobile menu toggle
         $(document).on('click', '.mobile-menu-toggle', function(e) {
             e.preventDefault();
             $(this).toggleClass('active');
-            $('.main-navigation ul').toggleClass('mobile-menu-open');
+            $('#primary-menu').toggleClass('active');
         });
 
         // Handle submenu toggles on mobile
-        if ($(window).width() <= 768) {
-            $('.main-navigation .menu-item-has-children > a').on('click', function(e) {
-                if ($(window).width() <= 768) {
-                    e.preventDefault();
-                    $(this).next('ul').slideToggle();
-                    $(this).parent().toggleClass('submenu-open');
-                }
-            });
-        }
+       $(document).on('click', '.main-navigation .menu-item-has-children > a', function(e) {
+            if ($(window).width() <= 768) {
+                e.preventDefault();
+                $(this).parent().toggleClass('mobile-active');
+                $(this).next('ul').slideToggle();
+            }
+        });
 
         // Close mobile menu when clicking outside
         $(document).on('click', function(e) {
@@ -220,26 +218,7 @@
         return isValid;
     }
 
-    /**
-     * Utility Functions
-     */
-    
-    // Debounce function
-    function debounce(func, wait, immediate) {
-        let timeout;
-        return function() {
-            const context = this, args = arguments;
-            const later = function() {
-                timeout = null;
-                if (!immediate) func.apply(context, args);
-            };
-            const callNow = immediate && !timeout;
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-            if (callNow) func.apply(context, args);
-        };
-    }
-
+   
     // Throttle function
     function throttle(func, limit) {
         let inThrottle;
@@ -288,129 +267,3 @@
 
 })(jQuery);
 
-// CSS for JavaScript functionality
-const additionalCSS = `
-/* Mobile Menu Styles */
-.mobile-menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    flex-direction: column;
-    padding: 0.5rem;
-    cursor: pointer;
-}
-
-.mobile-menu-toggle span {
-    display: block;
-    width: 25px;
-    height: 3px;
-    background: #fff;
-    margin: 3px 0;
-    transition: 0.3s;
-}
-
-.mobile-menu-toggle.active span:nth-child(1) {
-    transform: rotate(-45deg) translate(-5px, 6px);
-}
-
-.mobile-menu-toggle.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.mobile-menu-toggle.active span:nth-child(3) {
-    transform: rotate(45deg) translate(-5px, -6px);
-}
-
-/* Back to Top Button */
-#back-to-top {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #333;
-    color: #fff;
-    border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 20px;
-    display: none;
-    z-index: 1000;
-    transition: background 0.3s ease;
-}
-
-#back-to-top:hover {
-    background: #555;
-}
-
-/* Loading States */
-.loading {
-    opacity: 0.6;
-    pointer-events: none;
-}
-
-/* Form Error States */
-.form-field.error,
-input.error,
-textarea.error,
-select.error {
-    border-color: #ff0000;
-    background-color: #fff5f5;
-}
-
-/* Animation Classes */
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.animate-on-scroll.animated {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Responsive Mobile Menu */
-@media (max-width: 768px) {
-    .mobile-menu-toggle {
-        display: flex;
-    }
-    
-    .main-navigation ul {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: #333;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    
-    .main-navigation ul.mobile-menu-open {
-        display: flex;
-    }
-    
-    .main-navigation ul ul {
-        position: static;
-        box-shadow: none;
-        background: #444;
-    }
-    
-    .main-navigation li {
-        width: 100%;
-    }
-    
-    .main-navigation a {
-        padding: 1rem;
-        border-bottom: 1px solid #444;
-    }
-}
-`;
-
-// Add CSS to head
-if (typeof document !== 'undefined') {
-    const style = document.createElement('style');
-    style.textContent = additionalCSS;
-    document.head.appendChild(style);
-}
