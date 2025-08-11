@@ -35,9 +35,14 @@ wp-config.php
 # htaccess
 /.htaccess
 
+
 # Ignore everything in wp-content except themes/wp-custom-theme
 wp-content/*
 !wp-content/themes/
 !wp-content/themes/wp-custom-theme/
+
+# Ignore uploads and plugins
+wp-content/uploads/
+wp-content/plugins/
 
 .vscode/
